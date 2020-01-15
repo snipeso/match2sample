@@ -92,9 +92,6 @@ stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 levels = CONF["task"]["levels"] * CONF["task"]["trials"]
 
-screen.show_new_grid(2)
-print("____S_S_S__________")
-core.wait(5)
 
 ################################################
 # loop through blocks and trials
@@ -109,10 +106,10 @@ for block in range(1, totBlocks + 1):
     logging.info(f"{block} / {totBlocks}")
 
     # start block
-    for trial in range(1, len(levels)):
-        level = levels[trial-1]
+    for trial in range(len(levels)):
+        level = levels[trial]
         logging.info('Starting trial #%s with %s stimuli',
-                     trial, level)
+                     trial + 1, level)
 
         ###############################
         # Wait a little

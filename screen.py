@@ -58,11 +58,10 @@ class Screen:
 
         ###############
         # setup stimuli
-        # self.symbol = visual.ImageStim(
-        #     self.window,
-        #     units="cm",
-        #     height=CONF["stimuli"]["stimHeight"]
-        # )
+        self.symbol = visual.ImageStim(
+            self.window,
+            # height=CONF["stimuli"]["stimHeight"]
+        )
 
         # self.fixation = visual.TextStim(
         #     self.window,
@@ -78,12 +77,12 @@ class Screen:
         #                                 alignVert='center',
         #                                 pos=(0, 0),  # TEMP
         #                                 )
-        self.fixation = visual.Rect(
-            self.window,
-            pos=[0, 0],
-            height=2,
-            width=2
-        )
+        # self.fixation = visual.Rect(
+        #     self.window,
+        #     pos=[0, 0],
+        #     height=2,
+        #     width=2
+        # )
 
         # find the center position of all cells in the grid
 
@@ -105,6 +104,7 @@ class Screen:
         self.y = np.repeat(y, len(x))
 
         # get list of filenames
+        # TODO: make this already include the path
         self.files = os.listdir(CONF["stimuli"]["location"])
 
     def show_overview(self):
@@ -125,26 +125,25 @@ class Screen:
         self.cue.draw()
         self.window.flip()
 
-    def _draw_symbol(self, idx, color):
-        self.fixation.color = color
-        self.fixation.pos = [self.x[idx], self.y[idx]]
-        self.fixation.draw()
-        # self.symbol.setImage(filepath)
+    def _draw_symbol(self, filepath, locationIdx, color):
+
+        self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
+        self.symbol.setImage(filepath)
+        self.symbol.draw()
 
     def show_new_grid(self, level):
         stimuli = []
-        # symbolFiles = random.sample(self.files, level)
-        # xLocation = random.sample(
-        #     range(self.CONF["stimuli"]["gridDimentions"][1]), 1)
+        symbolFiles = random.sample(self.files, level)
+        locations = random.sample(
+            range(len(self.x)), level)
+        idx = 0  # TODO: find better solution
+        for filename in symbolFiles:
+            filepath = os.path.join(
+                self.CONF["stimuli"]["location"], filename)
 
-        # for filename in symbolFiles:
-        for idx in range(len(self.x)):
-
-            # path = os.path.join(self.CONF["stimuli"]["location"], filename)
-            print(idx)
-            self._draw_symbol(idx, "white")
+            self._draw_symbol(filepath, locations[idx], "white")
         # stimuli.append({"file": filename})
-        # idx += idx
+        idx += idx
 
         self.window.flip()
         print("flipped")
