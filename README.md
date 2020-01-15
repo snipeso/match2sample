@@ -33,3 +33,7 @@ Then from a new terminal, you can run directly `exp-match2sample` and it starts!
 ### Eventual TODOs
 
 ## Notes
+
+## Credits
+
+Stimuli come from the "aurebesh alphabet" used in Star Wars

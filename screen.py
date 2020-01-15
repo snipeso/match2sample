@@ -1,4 +1,7 @@
 import random
+import os
+import numpy as np
+import random
 
 from psychopy import visual, core, event, monitors
 from psychopy.hardware import keyboard
@@ -16,12 +19,12 @@ class Screen:
 
         self.window = visual.Window(
             size=CONF["screen"]["resolution"],
-            color=CONF["fixation"]["colorOff"],
+            color=CONF["pause"]["backgroundColor"],
             # display_resolution=CONF["screen"]["resolution"],
             monitor=mon,
             fullscr=CONF["screen"]["full"],
-            # units="cm",
-            allowGUI=True
+            allowGUI=True,
+            units="cm"
         )
 
         # set up instructions and overview
@@ -33,6 +36,7 @@ class Screen:
                                     height=.3,
                                     pos=(0, 0),  # TEMP
                                     units="norm"
+                                    # units="cm"
                                     )
         self.session = visual.TextStim(self.window,
                                        text="P" + CONF["participant"] +
@@ -52,40 +56,56 @@ class Screen:
 
         self.cue = visual.TextStim(self.window)
 
-        # Setup background
-        self.fixation_box = visual.Rect(
-            self.window, height=CONF["fixation"]["height"],
-            width=CONF["fixation"]["width"],
-            fillColor=CONF["fixation"]["boxColor"],
-            lineColor=CONF["fixation"]["boxColor"],
-            units=CONF["screen"]["units"])
-
-        self.left_on = visual.Rect(
-            self.window, height=2,
-            width=1,
-            pos=(-.5, 0),
-            fillColor=CONF["fixation"]["colorOn"],
-            lineColor=CONF["fixation"]["colorOn"],
-            units="norm")
-
-        self.right_on = visual.Rect(
-            self.window, height=2,
-            width=1,
-            pos=(.5, 0),
-            fillColor=CONF["fixation"]["colorOn"],
-            lineColor=CONF["fixation"]["colorOn"],
-            units="norm")
-
-        self.rightBorder = CONF["screen"]["size"][0] / \
-            2  # TODO: move to screen
-        self.topBorder = CONF["screen"]["size"][1] / 2
-
+        ###############
         # setup stimuli
-        self.spot = visual.Circle(
+        # self.symbol = visual.ImageStim(
+        #     self.window,
+        #     units="cm",
+        #     height=CONF["stimuli"]["stimHeight"]
+        # )
+
+        # self.fixation = visual.TextStim(
+        #     self.window,
+        #     text="+",
+        #     pos=[0, 0],
+        #     height=2
+        # )
+        # set up instructions and overview
+        # self.fixation = visual.TextStim(self.window,
+        #                                 # pos=[0, 0],
+        #                                 text="+",
+        #                                 alignHoriz='center',
+        #                                 alignVert='center',
+        #                                 pos=(0, 0),  # TEMP
+        #                                 )
+        self.fixation = visual.Rect(
             self.window,
-            edges=100,
-            units="cm"
+            pos=[0, 0],
+            height=2,
+            width=2
         )
+
+        # find the center position of all cells in the grid
+
+        def findPosition(n, l):
+            return (n-1)*l/2
+
+        # half the total distance from first to last position on the x axis
+        halfx = findPosition(
+            self.CONF["stimuli"]["gridDimentions"][1], self.CONF["stimuli"]["cellHeight"])
+        halfy = findPosition(
+            self.CONF["stimuli"]["gridDimentions"][0], self.CONF["stimuli"]["cellHeight"])
+
+        x = np.linspace(-halfx, halfx,
+                        self.CONF["stimuli"]["gridDimentions"][1])
+        y = np.linspace(-halfy, halfy,
+                        self.CONF["stimuli"]["gridDimentions"][0])
+
+        self.x = np.concatenate((x, x))
+        self.y = np.repeat(y, len(x))
+
+        # get list of filenames
+        self.files = os.listdir(CONF["stimuli"]["location"])
 
     def show_overview(self):
         self.task.draw()
@@ -105,80 +125,27 @@ class Screen:
         self.cue.draw()
         self.window.flip()
 
-    def set_background(self, showLeft):
-        if showLeft:
-            self.backgroundLeft = True
-        else:
-            self.backgroundLeft = False
+    def _draw_symbol(self, idx, color):
+        self.fixation.color = color
+        self.fixation.pos = [self.x[idx], self.y[idx]]
+        self.fixation.draw()
+        # self.symbol.setImage(filepath)
 
-        self.show_background()
+    def show_new_grid(self, level):
+        stimuli = []
+        # symbolFiles = random.sample(self.files, level)
+        # xLocation = random.sample(
+        #     range(self.CONF["stimuli"]["gridDimentions"][1]), 1)
 
-    def generate_coordinates(self):
-        if self.backgroundLeft:
-            x = random.uniform(-self.rightBorder + self.CONF["task"]["maxRadius"],
-                               0 - self.CONF["task"]["maxRadius"])
-        else:
-            x = random.uniform(
-                0 + self.CONF["task"]["maxRadius"], self.rightBorder - self.CONF["task"]["maxRadius"])
+        # for filename in symbolFiles:
+        for idx in range(len(self.x)):
 
-        self.x = x
-        self.y = random.uniform(-self.topBorder + self.CONF["task"]["maxRadius"],
-                                self.topBorder - self.CONF["task"]["maxRadius"])
-        return [self.x, self.y]
+            # path = os.path.join(self.CONF["stimuli"]["location"], filename)
+            print(idx)
+            self._draw_symbol(idx, "white")
+        # stimuli.append({"file": filename})
+        # idx += idx
 
-    def flash_fixation_box(self):
-        self._flip_fixation_color(self.CONF["task"]["earlyColor"])
-        core.wait(self.CONF["fixation"]["errorFlash"])
-        self._flip_fixation_color(self.CONF["fixation"]["boxColor"])
-
-    def start_spot(self):
-        self.spot.pos = [self.x, self.y]
-        # TODO: make centimeter thing work, and depend on screen size
-        self.spot.radius = self.CONF["task"]["maxRadius"]
-        self._set_spot_color(self.CONF["task"]["color"])
-        self._draw_background()
-        self.spot.draw()
         self.window.flip()
-
-    def shrink_spot(self, size, colored=False):
-        self.spot.radius = self.CONF["task"]["maxRadius"]*size
-
-        self._draw_background()
-        self.spot.draw()
-        self.window.flip()
-
-    def _set_spot_color(self, color):
-        self.spot.fillColor = color
-        self.spot.lineColor = color
-
-    def _flip_fixation_color(self, color):
-        self.fixation_box.fillColor = color
-        self.fixation_box.lineColor = color
-        self._draw_background()
-        self.fixation_box.draw()
-        self.window.flip()
-
-    def show_background(self):
-        self._draw_background()
-        self.window.flip()
-
-    def _draw_background(self):
-        if self.backgroundLeft:
-            self.left_on.draw()
-        else:
-            self.right_on.draw()
-        self.fixation_box.draw()
-
-    def show_result(self, time):
-        # gives different color stimulus depending on result
-        radiusPercent = (self.CONF["task"]["maxTime"] -
-                         time) / self.CONF["task"]["maxTime"]
-        if time < self.CONF["task"]["minTime"]:
-            self.flash_fixation_box()
-            return
-        elif time < self.CONF["task"]["maxTime"]:
-            self._set_spot_color(self.CONF["task"]["victoryColor"])
-        else:
-            return
-
-        self.shrink_spot(radiusPercent)
+        print("flipped")
+        return stimuli
