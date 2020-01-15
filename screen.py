@@ -130,6 +130,9 @@ class Screen:
         print([self.x[locationIdx], self.y[locationIdx]])
         self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
         self.symbol.setImage(filepath)
+        # self.symbol.color = color
+        # self.symbol.colorSpace = 'rgb255'
+        # self.symbol.color = (0, 128, 255)
         self.symbol.draw()
 
     def show_new_grid(self, level):
@@ -137,13 +140,11 @@ class Screen:
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
             range(len(self.x)), level)
-        print(locations)
         idx = 0  # TODO: find better solution
         for filename in symbolFiles:
             filepath = os.path.join(
                 self.CONF["stimuli"]["location"], filename)
-            print(locations[idx])
-            self._draw_symbol(filepath, locations[idx], "white")
+            self._draw_symbol(filepath, locations[idx], "red")
 
             # stimuli.append({"file": filename})
             idx += 1

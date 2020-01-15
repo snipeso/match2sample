@@ -102,6 +102,7 @@ for block in range(1, totBlocks + 1):
 
     # set block conditions
     random.shuffle(levels)
+    print(levels)
 
     logging.info(f"{block} / {totBlocks}")
 
@@ -114,13 +115,11 @@ for block in range(1, totBlocks + 1):
         ###############################
         # Wait a little
 
-        # screen.show_blank()
-        screen.show_new_grid(6)
-        logging.info("show screen")
-        core.wait(3)  # TEMP
+        screen.show_blank()
 
         # start delay
         delayTimer = core.CountdownTimer(CONF["pause"]["duration"])
+        logging.info("starting delay of %s", delayTimer)
 
         extraKeys = []
         while delayTimer.getTime() > 0:
@@ -142,7 +141,7 @@ for block in range(1, totBlocks + 1):
         #######################
         # Stimulus presentation
 
-        screen.show_new_grid(6)
+        screen.show_new_grid(level)
 
         #########
         # Outcome
