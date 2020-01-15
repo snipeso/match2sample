@@ -60,7 +60,7 @@ class Screen:
         # setup stimuli
         self.symbol = visual.ImageStim(
             self.window,
-            # height=CONF["stimuli"]["stimHeight"]
+            size=(CONF["stimuli"]["stimHeight"], CONF["stimuli"]["stimHeight"])
         )
 
         # self.fixation = visual.TextStim(
@@ -84,6 +84,7 @@ class Screen:
         #     width=2
         # )
 
+        ###################################################
         # find the center position of all cells in the grid
 
         def findPosition(n, l):

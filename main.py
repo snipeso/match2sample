@@ -115,9 +115,9 @@ for block in range(1, totBlocks + 1):
         # Wait a little
 
         # screen.show_blank()
-        screen.show_new_grid(2)
+        screen.show_new_grid(6)
         logging.info("show screen")
-        core.wait(3)
+        core.wait(3)  # TEMP
 
         # start delay
         delayTimer = core.CountdownTimer(CONF["pause"]["duration"])

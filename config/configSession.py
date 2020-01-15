@@ -5,7 +5,7 @@ CONF = {
     "participant": os.environ.get("participant", "00"),
     "session": os.environ.get("session", "0"),
     "screen": {
-        "full": True,
+        "full": False,
         "color": "#6B6B6B",
         "monitor": 'Extreme',  # "testMonitor",
         # screen size when not fullscreen
