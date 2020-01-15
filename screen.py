@@ -127,7 +127,7 @@ class Screen:
         self.window.flip()
 
     def _draw_symbol(self, filepath, locationIdx, color):
-
+        print([self.x[locationIdx], self.y[locationIdx]])
         self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
         self.symbol.setImage(filepath)
         self.symbol.draw()
@@ -137,14 +137,16 @@ class Screen:
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
             range(len(self.x)), level)
+        print(locations)
         idx = 0  # TODO: find better solution
         for filename in symbolFiles:
             filepath = os.path.join(
                 self.CONF["stimuli"]["location"], filename)
-
+            print(locations[idx])
             self._draw_symbol(filepath, locations[idx], "white")
-        # stimuli.append({"file": filename})
-        idx += idx
+
+            # stimuli.append({"file": filename})
+            idx += 1
 
         self.window.flip()
         print("flipped")
