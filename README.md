@@ -23,7 +23,8 @@ Then from a new terminal, you can run directly `exp-match2sample` and it starts!
 
 - 3 seconds to memorize either 1, 3 or 6 symbols
 - 7 seconds retention
-- 3 seconds reponse
+- 3 seconds reponse (maybe do 2 6 and 2?)
+- 10 trials of each size, so 30 per block, tot 3 blocks
 
 ## Todo
 
