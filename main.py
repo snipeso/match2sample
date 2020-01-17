@@ -2,6 +2,7 @@ import logging
 import os
 import random
 import time
+import datetime
 import sys
 # import psychtoolbox as ptb
 
@@ -25,7 +26,8 @@ logging.basicConfig(
 screen = Screen(CONF)
 scorer = Scorer()
 datalog = Datalog(OUTPUT_FOLDER=os.path.join(
-    'output', CONF["task"]["name"]), CONF=CONF)  # This is for saving data
+    'output', datetime.datetime.now(
+    ).strftime("%Y-%m-%d")), CONF=CONF)  # This is for saving data
 kb = keyboard.Keyboard()
 mainClock = core.MonotonicClock()  # starts clock for timestamping events
 alarm = sound.Sound(os.path.join('sounds', CONF["tones"]["alarm"]),
@@ -91,8 +93,9 @@ def onFlip():  # TODO: does this go somewhere else?
 stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 levels = CONF["task"]["levels"] * CONF["task"]["trials"]
-shouldMatch = [True] * len(levels)/2 + [False] * \
-    len(levels)/2  # probe matches half the time
+# shouldMatch = [True] * len(levels)/2 + [False] * \
+#     len(levels)/2  # probe matches half the time
+shouldMatch = [True] * 3 + [False]
 
 ################################################
 # loop through blocks and trials
