@@ -91,7 +91,8 @@ def onFlip():  # TODO: does this go somewhere else?
 stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 levels = CONF["task"]["levels"] * CONF["task"]["trials"]
-
+shouldMatch = [True] * len(levels)/2 + [False] * \
+    len(levels)/2  # probe matches half the time
 
 ################################################
 # loop through blocks and trials
@@ -102,6 +103,7 @@ for block in range(1, totBlocks + 1):
 
     # set block conditions
     random.shuffle(levels)
+    random.shuffle(shouldMatch)
     print(levels)
 
     logging.info(f"{block} / {totBlocks}")
@@ -132,19 +134,39 @@ for block in range(1, totBlocks + 1):
 
             core.wait(0.1)
 
+        #######################
+        # Stimulus presentation
+        stimuli = screen.show_new_grid(level)
+        core.wait(CONF["task"]["stimTime"])
+
+        screen.show_blank()
+        core.wait(CONF["task"]["retentionTime"])
+
+        if shouldMatch[trial]:
+            # TODO one day: make this not random, but counterbalanced
+            probe = random.choice(stimuli["filenames"])
+
+        screen.show_probe(probe)
+        responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
+
+        Missed = True
+        while responseTimer.getTime() > 0:
+            key = kb.getKeys()
+            if key:
+                quitExperimentIf(key[0].name == 'q')
+                Missed = False
+                break
+
         # log data
+        # TODO, save stimuli
         datalog["level"] = level
         datalog["block"] = block
         datalog["trial"] = trial
         datalog["extrakeypresses"] = extraKeys
-
-        #######################
-        # Stimulus presentation
-
-        screen.show_new_grid(level)
-
-        #########
-        # Outcome
+        datalog["stimuli"] = stimuli
+        datalog["probe"] = probe
+        datalog["shouldMatch"] = shouldMatch[trial]
+        logging.info("finished trial")
 
         # save data to file
         datalog.flush()

@@ -11,14 +11,14 @@ CONF.update({
         "levels": [1, 3, 6],
         "stimTime": 2,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
-        "retentionTime": 6,
+        "retentionTime":  1,  # 6,
         "probeTime": 2,
         "maxMissed": 3,
 
 
     },
     "stimuli": {
-        "location": os.path.join("stimuli", "alphabet"),
+        "location": os.path.join("stimuli", "jediAlphabet"),
         # needs to be large enough for max number of stimuli
         "gridDimentions": [2, 3],  # number of cells in rows and columns
         "cellHeight": 3,  # in cm

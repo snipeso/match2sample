@@ -126,29 +126,34 @@ class Screen:
         self.cue.draw()
         self.window.flip()
 
-    def _draw_symbol(self, filepath, locationIdx, color):
-        print([self.x[locationIdx], self.y[locationIdx]])
-        self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
+    def _draw_symbol(self, filename, locationIdx):
+        filepath = os.path.join(
+            self.CONF["stimuli"]["location"], filename)
+
+        if locationIdx:
+            self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
+        else:
+            self.symbol.pos = [0, 0]
         self.symbol.setImage(filepath)
-        # self.symbol.color = color
-        # self.symbol.colorSpace = 'rgb255'
-        # self.symbol.color = (0, 128, 255)
         self.symbol.draw()
 
     def show_new_grid(self, level):
-        stimuli = []
+        stimuli = {}
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
             range(len(self.x)), level)
         idx = 0  # TODO: find better solution
         for filename in symbolFiles:
-            filepath = os.path.join(
-                self.CONF["stimuli"]["location"], filename)
-            self._draw_symbol(filepath, locations[idx], "red")
+            self._draw_symbol(filename, locations[idx])
 
-            # stimuli.append({"file": filename})
             idx += 1
+        stimuli["filenames"] = symbolFiles
+        stimuli["locations"] = locations
 
         self.window.flip()
-        print("flipped")
+
         return stimuli
+
+    def show_probe(self, filename):
+        self._draw_symbol(filename, False)
+        self.window.flip()
