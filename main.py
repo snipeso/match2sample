@@ -9,6 +9,7 @@ import sys
 from chronometer import Chronometer
 from screen import Screen
 from scorer import Scorer
+# from trigger import Trigger
 from psychopy import core, event, sound
 from psychopy.hardware import keyboard
 
@@ -93,9 +94,9 @@ def onFlip():  # TODO: does this go somewhere else?
 stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 levels = CONF["task"]["levels"] * CONF["task"]["trials"]
-# shouldMatch = [True] * len(levels)/2 + [False] * \
-#     len(levels)/2  # probe matches half the time
-shouldMatch = [True] * 3 + [False]
+shouldMatch = [True] * int(len(levels)/2) + [False] * \
+    int(len(levels)/2)  # probe matches half the time
+
 
 ################################################
 # loop through blocks and trials
@@ -134,20 +135,28 @@ for block in range(1, totBlocks + 1):
                 # TODO: make seperate function that also keeps track of q, make q in config
                 quitExperimentIf(key[0].name == 'q')
                 extraKeys.append(mainClock.getTime())
+                # trigger.
 
             core.wait(0.1)
 
+        # log
+        scorer.scores["extraKeys"] += len(extraKeys)
+        datalog["extrakeypresses"] = extraKeys
+
         #######################
         # Stimulus presentation
-        stimuli = screen.show_new_grid(level)
+        screen.show_new_grid(level)
         core.wait(CONF["task"]["stimTime"])
 
-        screen.show_blank()
+        screen.show_fixation()
         core.wait(CONF["task"]["retentionTime"])
 
         if shouldMatch[trial]:
             # TODO one day: make this not random, but counterbalanced
-            probe = random.choice(stimuli["filenames"])
+            probe = random.choice(screen.stimuli["filenames"])
+        else:
+            notShown = set(screen.files) - set(screen.stimuli)
+            probe = random.choice(list(notShown))
 
         screen.show_probe(probe)
         responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
@@ -165,8 +174,8 @@ for block in range(1, totBlocks + 1):
         datalog["level"] = level
         datalog["block"] = block
         datalog["trial"] = trial
-        datalog["extrakeypresses"] = extraKeys
-        datalog["stimuli"] = stimuli
+
+        datalog["stimuli"] = screen.stimuli
         datalog["probe"] = probe
         datalog["shouldMatch"] = shouldMatch[trial]
         logging.info("finished trial")

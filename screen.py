@@ -77,12 +77,14 @@ class Screen:
         #                                 alignVert='center',
         #                                 pos=(0, 0),  # TEMP
         #                                 )
-        # self.fixation = visual.Rect(
-        #     self.window,
-        #     pos=[0, 0],
-        #     height=2,
-        #     width=2
-        # )
+        self.fixation = visual.Rect(
+            self.window,
+            pos=[0, 0],
+            height=1,
+            width=2,
+            units="cm",
+            color="red"
+        )
 
         ###################################################
         # find the center position of all cells in the grid
@@ -121,6 +123,10 @@ class Screen:
     def show_blank(self):
         self.window.flip()
 
+    def show_fixation(self):
+        self.fixation.draw()
+        self.window.flip()
+
     def show_cue(self, word):
         self.cue.setText(word)
         self.cue.draw()
@@ -152,7 +158,7 @@ class Screen:
 
         self.window.flip()
 
-        return stimuli
+        self.stimuli = stimuli
 
     def show_probe(self, filename):
         self._draw_symbol(filename, False)
