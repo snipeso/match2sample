@@ -148,7 +148,7 @@ for block in range(1, totBlocks + 1):
         core.wait(CONF["timing"]["cue"])
 
         # show stimulus
-        screen.window.callOnFlip(onFlip("Stim"), "startTime")
+        screen.window.callOnFlip(onFlip, "Stim", "startTime")
         screen.show_new_grid(condition[0])
         core.wait(CONF["task"]["stimTime"])
 
@@ -182,7 +182,7 @@ for block in range(1, totBlocks + 1):
             probeTrigger = "NonMatchProbe"
 
         # show probe stimulus
-        screen.window.callOnFlip(onFlip(probeTrigger, "probeTime"))
+        screen.window.callOnFlip(onFlip, probeTrigger, "probeTime")
         screen.show_probe(probe)
         responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
 

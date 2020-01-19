@@ -30,8 +30,8 @@ CONF.update({
     "instructions": {
         "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the LEFT arrow if it was included in the previous set, or with the RIGHT arrow if it was not. You hae 3 seconds to respond.",
         "startPrompt": "Press any key to continue. Press q to quit.",
-        "matchImage": os.path.join("stimuli", "probe", "check.png"),
-        "mismatchImage": os.path.join("stimuli", "probe", "x.png"),
+        "matchImage": os.path.join("stimuli", "probe", "check.JPG"),
+        "mismatchImage": os.path.join("stimuli", "probe", "x.JPG"),
         "matchPos": (5, 0),  # in cm
         "mismatchPos": (-5, 0),
         "matchSize": (1, 1)
