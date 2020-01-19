@@ -62,28 +62,28 @@ def onFlip():
 ##############
 
 
-# # Display overview of session
-# screen.show_overview()
-# core.wait(CONF["timing"]["overview"])
+# Display overview of session
+screen.show_overview()
+core.wait(CONF["timing"]["overview"])
 
-# # Optionally, display instructions
-# if CONF["showInstructions"]:
-#     screen.show_instructions()
-#     key = event.waitKeys()
-#     quitExperimentIf(key[0] == 'q')
+# Optionally, display instructions
+if CONF["showInstructions"]:
+    screen.show_instructions()
+    key = event.waitKeys()
+    quitExperimentIf(key[0] == 'q')
 
-# # Blank screen for initial rest
-# screen.show_blank()
-# logging.info('Starting blank period')
+# Blank screen for initial rest
+screen.show_blank()
+logging.info('Starting blank period')
 
-# trigger.send("StartBlank")
-# core.wait(CONF["timing"]["rest"])
-# trigger.send("EndBlank")
+trigger.send("StartBlank")
+core.wait(CONF["timing"]["rest"])
+trigger.send("EndBlank")
 
-# # Cue start of the experiment
-# screen.show_cue("START")
-# trigger.send("Start")
-# core.wait(CONF["timing"]["cue"])
+# Cue start of the experiment
+screen.show_cue("START")
+trigger.send("Start")
+core.wait(CONF["timing"]["cue"])
 
 ##########################################################################
 
@@ -109,7 +109,6 @@ for block in range(1, totBlocks + 1):
     # set block conditions
     random.shuffle(levels)
     random.shuffle(shouldMatch)
-    print(levels)
 
     logging.info(f"{block} / {totBlocks}")
 
@@ -143,6 +142,10 @@ for block in range(1, totBlocks + 1):
 
         #######################
         # Stimulus presentation
+
+        # show fixation first
+        screen.show_fixation()
+        core.wait(CONF["timing"]["cue"])
 
         # show stimulus
         screen.window.callOnFlip(onFlip)
@@ -200,6 +203,7 @@ for block in range(1, totBlocks + 1):
                     responseTrigger = "IncorrectAnswer"
 
                 trigger.send(responseTrigger)
+                datalog["responseTrigger"] = responseTrigger
                 Missed = False
                 break
 
@@ -215,9 +219,17 @@ for block in range(1, totBlocks + 1):
 
         if Missed:
             datalog["missed"] = True
+            scorer.newAnswer("missed")
+            totMissed += 1
+            if totMissed > CONF["task"]["maxMissed"]:
+                trigger.send("ALARM")
+                alarm.play()
+                datalog["alarm"] = mainClock.getTime()
+                logging.warning("alarm sound!!!!!")
         else:
             datalog["response"] = key[0].name
-            datalog["RT"] = key[0].rt
+            datalog["RT"] = key[0].rt  # make sure clock resets to probe onset!
+            scorer.newAnswer(responseTrigger)
 
         logging.info("finished trial")
 

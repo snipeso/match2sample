@@ -33,26 +33,26 @@ class Screen:
                                     text=CONF["task"]["name"],
                                     alignHoriz='center',
                                     alignVert='center',
-                                    height=.3,
+                                    height=.5,
                                     pos=(0, 0),  # TEMP
-                                    units="norm"
-                                    # units="cm"
+
+                                    units="cm"
                                     )
         self.session = visual.TextStim(self.window,
                                        text="P" + CONF["participant"] +
                                        " Session " + CONF["session"],
                                        pos=[.75, -.3],  # TEMP
-                                       height=.1,
+                                       height=.5,
                                        alignHoriz='center',
                                        alignVert='center',
-                                       units="norm"
-                                       )
+                                       units="cm"
+                                       )  # TODO: add this to instructions page!
 
         self.instructions = visual.TextStim(
-            self.window, text=CONF["instructions"]["text"], height=.05)
+            self.window, text=CONF["instructions"]["text"], height=.5, units="cm")
 
         self.startPrompt = visual.TextStim(
-            self.window, text=CONF["instructions"]["startPrompt"], height=0.05, pos=[0, -.3])
+            self.window, text=CONF["instructions"]["startPrompt"], height=.5, units="cm", pos=[0, -2])
 
         self.cue = visual.TextStim(self.window)
 
@@ -160,7 +160,7 @@ class Screen:
 
         else:
             self.symbol.pos = self.midpoint
-            print("0", self.symbol.pos)
+
         self.symbol.setImage(filepath)
         self.symbol.draw()
 
@@ -169,7 +169,6 @@ class Screen:
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
             self.coordinates, level)
-        print("all locs", locations)
 
         for idx, filename in enumerate(symbolFiles):
             self._draw_symbol(filename, locations[idx])

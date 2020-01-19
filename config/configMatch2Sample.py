@@ -5,13 +5,12 @@ from config.configSession import CONF
 CONF.update({
     "task": {
         "name": "match2sample",
-        "duration": 2*80,  # 2 * 60,  # duration of a block, in seconds
-        "blocks": 3,  # number of blocks, try to be even
+        "blocks": 1,  # number of blocks, try to be even
         "trials": 10,  # number of trials per condition
         "levels": [1, 3, 6],
         "stimTime": 3,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
-        "retentionTime":  1,  # 7,
+        "retentionTime": 6,
         "probeTime": 3,
         "maxMissed": 3,
         "answerKeys": ["left", "right"]  # match and mismatch respectively
@@ -27,7 +26,7 @@ CONF.update({
     },
     "pause": {
         "backgroundColor": "black",
-        "duration": 1  # figure it out
+        "duration": 2  # figure it out
     },
     "instructions": {
         "text": "You will be presented with either 1, 3, or 6 stimuli. After a delay, a symbol will be shown, and you must indicate with LEFT arrow if it was included, or RIGHT arrow if it was not in the original set.",
