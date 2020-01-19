@@ -5,13 +5,12 @@ import os
 CONF = {
     "participant": os.environ.get("participant", "00"),
     "session": os.environ.get("session", "0"),
+    "version": ["main", "demo", "debug"][1],
     "showInstructions": False,
     "sendTriggers": False,
     "loggingLevel": logging.INFO,
     "screen": {
         "full": True,
-        "color": "#6B6B6B",
-        "monitor": 'Extreme',  # "testMonitor",
         # screen size when not fullscreen
         "debugResolution":  [1000, 1000],  # [384, 216],
         "debugSize": [10, 10],
@@ -21,7 +20,7 @@ CONF = {
         "size": [34.4, 19.3]
     },
     "timing": {
-        "rest":  1,  # 60, !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        "rest":  60,
         "overview": 1,
         "cue": 1
     },
@@ -42,3 +41,26 @@ CONF = {
         }
     }
 }
+
+if CONF["version"] == "main":
+    CONF.update({
+        "showInstructions": True,
+        "sendTriggers": True,
+        "loggingLevel": logging.WARNING})
+    CONF["screen"]["full"] = True
+    CONF["timing"]["rest"] = 60
+
+elif CONF["version"] == "demo":
+    CONF.update({
+        "showInstructions": True,
+        "sendTriggers": False,
+        "loggingLevel": logging.WARNING})
+    CONF["screen"]["full"] = True
+    CONF["timing"]["rest"] = 1
+else:
+    CONF.update({
+        "showInstructions": False,
+        "sendTriggers": False,
+        "logginLevel": logging.INFO})
+    CONF["screen"]["full"] = True
+    CONF["timing"]["rest"] = 1

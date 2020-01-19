@@ -124,6 +124,7 @@ class Screen:
 
         # get list of filenames
         self.files = os.listdir(CONF["stimuli"]["location"])
+        self.fileId = 0
 
         ##################
         # probe components
@@ -166,8 +167,18 @@ class Screen:
     def show_new_grid(self, level):
         stimuli = {}
         symbolFiles = random.sample(self.files, level)
+
         locations = random.sample(
             self.coordinates, level)
+
+        if self.CONF["version"] == "demo":
+            symbolFiles = [self.files[self.fileId]]
+            self.fileId += 1
+
+            if self.fileId > len(self.files) - 1:
+                self.fileId = 0
+
+            locations = [random.choice(self.coordinates)]
 
         for idx, filename in enumerate(symbolFiles):
             self._draw_symbol(filename, locations[idx])

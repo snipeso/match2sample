@@ -25,7 +25,7 @@ CONF.update({
     },
     "pause": {
         "backgroundColor": "black",
-        "duration": 2  # figure it out
+        "duration": 2
     },
     "instructions": {
         "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the LEFT arrow if it was included in the previous set, or with the RIGHT arrow if it was not. You hae 3 seconds to respond.",
@@ -51,3 +51,12 @@ CONF["trigger"]["labels"]["MatchProbe"] = 0x0B
 CONF["trigger"]["labels"]["NonMatchProbe"] = 0x0C
 CONF["trigger"]["labels"]["CorrectAnswer"] = 0x0D
 CONF["trigger"]["labels"]["IncorrectAnswer"] = 0x0E
+
+
+if CONF["version"] == "demo":
+    CONF["task"]["blocks"] = 1
+    CONF["task"]["trials"] = 30
+    CONF["task"]["levels"] = [1]
+    CONF["task"]["stimTime"] = 1
+    CONF["task"]["retentionTime"] = 1
+    CONF["task"]["probeTime"] = 3
