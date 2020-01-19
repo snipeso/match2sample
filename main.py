@@ -217,23 +217,21 @@ for block in range(1, totBlocks + 1):
 ###########
 # Concluion
 
+
 # End main experiment
 screen.show_cue("DONE!")
+trigger.send("End")
 core.wait(CONF["timing"]["cue"])
-
-# Get data score
-
 
 # Blank screen for final rest
 screen.show_blank()
 logging.info('Starting blank period')
-# TODO: send start trigger
+
+trigger.send("StartBlank")
 core.wait(CONF["timing"]["rest"])
-# TODO: send end wait trigger
+trigger.send("EndBlank")
+
 
 logging.info('Finished')
-
-
-quitExperimentIf(True)
-
-# TODO: make keyboard class!
+scorer.getScore()
+trigger.reset()
