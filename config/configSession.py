@@ -5,7 +5,7 @@ import os
 CONF = {
     "participant": os.environ.get("participant", "00"),
     "session": os.environ.get("session", "0"),
-    "showInstructions": True,
+    "showInstructions": False,
     "sendTriggers": False,
     "loggingLevel": logging.INFO,
     "screen": {

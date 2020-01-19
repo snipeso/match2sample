@@ -8,9 +8,9 @@ CONF.update({
         "blocks": 4,  # number of blocks, try to be even
         "trials": 8,  # number of trials per condition
         "levels": [1, 3, 6],
-        "stimTime": 3,  # in seconds, min time to be considered a valid RT
+        "stimTime": 2,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
-        "retentionTime": 6,
+        "retentionTime": 4,
         "probeTime": 3,
         "maxMissed": 3,
         "answerKeys": ["left", "right"]  # match and mismatch respectively
@@ -29,7 +29,7 @@ CONF.update({
         "duration": 2  # figure it out
     },
     "instructions": {
-        "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the LEFT arrow if it was included in the previous set, or with the RIGHT arrow if it was not.",
+        "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the LEFT arrow if it was included in the previous set, or with the RIGHT arrow if it was not. You hae 3 seconds to respond.",
         "startPrompt": "Press any key to continue. Press q to quit.",
         "matchImage": os.path.join("stimuli", "probe", "check.png"),
         "mismatchImage": os.path.join("stimuli", "probe", "x.png"),
