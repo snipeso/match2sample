@@ -9,7 +9,7 @@ import sys
 from chronometer import Chronometer
 from screen import Screen
 from scorer import Scorer
-# from trigger import Trigger
+from trigger import Trigger
 from psychopy import core, event, sound
 from psychopy.hardware import keyboard
 
@@ -26,6 +26,8 @@ logging.basicConfig(
 
 screen = Screen(CONF)
 scorer = Scorer()
+trigger = Trigger(CONF["trigger"]["serial_device"],
+                  CONF["sendTriggers"], CONF["trigger"]["labels"])
 datalog = Datalog(OUTPUT_FOLDER=os.path.join(
     'output', datetime.datetime.now(
     ).strftime("%Y-%m-%d")), CONF=CONF)  # This is for saving data
@@ -33,9 +35,6 @@ kb = keyboard.Keyboard()
 mainClock = core.MonotonicClock()  # starts clock for timestamping events
 alarm = sound.Sound(os.path.join('sounds', CONF["tones"]["alarm"]),
                     stereo=True)
-
-# Experiment conditions
-# showLeft = random.choice([True, False])
 
 
 logging.info('Initialization completed')
@@ -47,15 +46,16 @@ def quitExperimentIf(shouldQuit):
     "Quit experiment if condition is met"
 
     if shouldQuit:
+        trigger.send("Quit")
         scorer.getScore()
         logging.info('quit experiment')
         sys.exit(2)  # TODO: make version where quit is sys 1 vs sys 2
 
 
-def onFlip():  # TODO: does this go somewhere else?
+def onFlip():
+    trigger.send("Stim")
     kb.clock.reset()  # this starts the keyboard clock as soon as stimulus appears
     datalog["startTime"] = mainClock.getTime()
-    # TODO: send start trigger
 
 ##############
 # Introduction
@@ -76,12 +76,13 @@ def onFlip():  # TODO: does this go somewhere else?
 # screen.show_blank()
 # logging.info('Starting blank period')
 
-# # TODO: send start trigger
+# trigger.send("StartBlank")
 # core.wait(CONF["timing"]["rest"])
-# # TODO: send end wait trigger
+# trigger.send("EndBlank")
 
 # # Cue start of the experiment
 # screen.show_cue("START")
+# trigger.send("Start")
 # core.wait(CONF["timing"]["cue"])
 
 ##########################################################################
@@ -135,22 +136,38 @@ for block in range(1, totBlocks + 1):
                 # TODO: make seperate function that also keeps track of q, make q in config
                 quitExperimentIf(key[0].name == 'q')
                 extraKeys.append(mainClock.getTime())
-                # trigger.
+                trigger.send("BadResponse")
 
             core.wait(0.1)
 
-        # log
-        scorer.scores["extraKeys"] += len(extraKeys)
-        datalog["extrakeypresses"] = extraKeys
-
         #######################
         # Stimulus presentation
+
+        # show stimulus
+        screen.window.callOnFlip(onFlip)
         screen.show_new_grid(level)
         core.wait(CONF["task"]["stimTime"])
 
+        # show just fixation dot
         screen.show_fixation()
-        core.wait(CONF["task"]["retentionTime"])
+        trigger.send("StartFix")
+        retentionTimer = core.CountdownTimer(CONF["task"]["retentionTime"])
 
+        while retentionTimer.getTime() > 0:
+            #  Record any extra key presses during wait
+            key = kb.getKeys()
+            if key:
+                quitExperimentIf(key[0].name == 'q')
+                extraKeys.append(mainClock.getTime())
+                trigger.send("BadResponse")
+
+            core.wait(0.01)
+
+        # log all extra key presses
+        scorer.scores["extraKeys"] += len(extraKeys)
+        datalog["extrakeypresses"] = extraKeys
+
+        # determine probe stimulus
         if shouldMatch[trial]:
             # TODO one day: make this not random, but counterbalanced
             probe = random.choice(screen.stimuli["filenames"])
@@ -158,7 +175,9 @@ for block in range(1, totBlocks + 1):
             notShown = set(screen.files) - set(screen.stimuli)
             probe = random.choice(list(notShown))
 
+        # show probe stimulus
         screen.show_probe(probe)
+        trigger.send("Probe")  # TODO, make this happen on flip! so fast!
         responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
 
         Missed = True
@@ -166,11 +185,11 @@ for block in range(1, totBlocks + 1):
             key = kb.getKeys()
             if key:
                 quitExperimentIf(key[0].name == 'q')
+                trigger.send("Response")
                 Missed = False
                 break
 
         # log data
-        # TODO, save stimuli
         datalog["level"] = level
         datalog["block"] = block
         datalog["trial"] = trial
@@ -178,6 +197,13 @@ for block in range(1, totBlocks + 1):
         datalog["stimuli"] = screen.stimuli
         datalog["probe"] = probe
         datalog["shouldMatch"] = shouldMatch[trial]
+
+        if Missed:
+            datalog["missed"] = True
+        else:
+            datalog["response"] = key[0].name
+            datalog["RT"] = key[0].rt
+
         logging.info("finished trial")
 
         # save data to file
@@ -209,3 +235,5 @@ logging.info('Finished')
 
 
 quitExperimentIf(True)
+
+# TODO: make keyboard class!

@@ -80,8 +80,8 @@ class Screen:
         self.fixation = visual.Rect(
             self.window,
             pos=[0, 0],
-            height=1,
-            width=2,
+            height=.5,
+            width=.5,
             units="cm",
             color="red"
         )
@@ -102,9 +102,10 @@ class Screen:
                         self.CONF["stimuli"]["gridDimentions"][1])
         y = np.linspace(-halfy, halfy,
                         self.CONF["stimuli"]["gridDimentions"][0])
-
+        print(x, y)
         self.x = np.concatenate((x, x))
         self.y = np.repeat(y, len(x))
+        print("rep", self.x, self.y)
 
         # get list of filenames
         # TODO: make this already include the path
@@ -138,8 +139,10 @@ class Screen:
 
         if locationIdx:
             self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
+            print("num", self.symbol.pos, self.x, self.y, locationIdx)
         else:
             self.symbol.pos = [0, 0]
+            print("0", self.symbol.pos)
         self.symbol.setImage(filepath)
         self.symbol.draw()
 
@@ -148,6 +151,7 @@ class Screen:
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
             range(len(self.x)), level)
+        print("all locs", locations)
         idx = 0  # TODO: find better solution
         for filename in symbolFiles:
             self._draw_symbol(filename, locations[idx])
@@ -156,6 +160,7 @@ class Screen:
         stimuli["filenames"] = symbolFiles
         stimuli["locations"] = locations
 
+        self.fixation.draw()
         self.window.flip()
 
         self.stimuli = stimuli

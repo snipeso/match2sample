@@ -9,10 +9,10 @@ CONF.update({
         "blocks": 3,  # number of blocks, try to be even
         "trials": 10,  # number of trials per condition
         "levels": [1, 3, 6],
-        "stimTime": 2,  # in seconds, min time to be considered a valid RT
+        "stimTime": 3,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
-        "retentionTime":  1,  # 6,
-        "probeTime": 2,
+        "retentionTime":  7,  # 6,
+        "probeTime": 3,
         "maxMissed": 3,
 
 
@@ -22,7 +22,7 @@ CONF.update({
         # needs to be large enough for max number of stimuli
         "gridDimentions": [2, 3],  # number of cells in rows and columns
         "cellHeight": 3,  # in cm
-        "stimHeight": 1,
+        "stimHeight": 2,
 
     },
     "pause": {
@@ -41,3 +41,7 @@ CONF.update({
 
 CONF["screen"]["size"] = CONF["screen"]["size"] if CONF["screen"]["full"] else CONF["screen"]["debugSize"]
 CONF["screen"]["resolution"] = CONF["screen"]["resolution"] if CONF["screen"]["full"] else CONF["screen"]["debugResolution"]
+
+# additional triggers
+CONF["trigger"]["labels"]["StartFix"] = 0x0A
+CONF["trigger"]["labels"]["Probe"] = 0x0B
