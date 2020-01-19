@@ -87,6 +87,7 @@ core.wait(CONF["timing"]["cue"])
 
 ##########################################################################
 
+
 #################
 # Main experiment
 #################
@@ -237,8 +238,11 @@ for block in range(1, totBlocks + 1):
         datalog.flush()
 
     # Brief blank period to rest eyes and signal block change
-    screen.show_cue(f"{block} / {totBlocks}", )
+    screen.show_block_break(f"{block} / {totBlocks}")
     logging.info('Starting block switch rest period')
+    key = event.waitKeys()
+    quitExperimentIf(key[0] == 'q')
+
     core.wait(CONF["pause"]["duration"])
 
 ###########

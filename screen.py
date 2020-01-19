@@ -186,3 +186,7 @@ class Screen:
         self.match.draw()
         self.mismatch.draw()
         self.window.flip()
+
+    def show_block_break(self, text):
+        self.startPrompt.draw()
+        self.show_cue(text)

@@ -30,7 +30,7 @@ CONF.update({
     },
     "instructions": {
         "text": "You will be presented with either 1, 3, or 6 stimuli. After a delay, a symbol will be shown, and you must indicate with LEFT arrow if it was included, or RIGHT arrow if it was not in the original set.",
-        "startPrompt": "Press any key to start. Press q to quit.",
+        "startPrompt": "Press any key to continue. Press q to quit.",
         "matchImage": os.path.join("stimuli", "probe", "check.png"),
         "mismatchImage": os.path.join("stimuli", "probe", "x.png"),
         "matchPos": (-5, 0),  # in cm
