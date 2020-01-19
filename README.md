@@ -31,6 +31,9 @@ Then from a new terminal, you can run directly `exp-match2sample` and it starts!
 - check literature again
 - set a mask! to avoid after-images helping memory
 - make demo version
+- reset kb rt
+- prolong break
+- counterbalance matches and not, such that half of match trials are per level
 
 ### Eventual TODOs
 
