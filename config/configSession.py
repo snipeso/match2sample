@@ -7,7 +7,7 @@ CONF = {
     "session": os.environ.get("session", "0"),
     "showInstructions": True,
     "sendTriggers": False,
-    "loggingLevel": logging.WARNING,
+    "loggingLevel": logging.INFO,
     "screen": {
         "full": True,
         "color": "#6B6B6B",

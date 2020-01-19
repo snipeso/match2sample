@@ -4,6 +4,7 @@ import random
 import time
 import datetime
 import sys
+import math
 # import psychtoolbox as ptb
 
 from chronometer import Chronometer
@@ -96,7 +97,7 @@ core.wait(CONF["timing"]["cue"])
 stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 levels = CONF["task"]["levels"] * CONF["task"]["trials"]
-shouldMatch = [True] * int(len(levels)/2) + [False] * \
+shouldMatch = [True] * math.ceil(len(levels)/2) + [False] * \
     int(len(levels)/2)  # probe matches half the time
 
 
