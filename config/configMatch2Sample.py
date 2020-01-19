@@ -44,4 +44,7 @@ CONF["screen"]["resolution"] = CONF["screen"]["resolution"] if CONF["screen"]["f
 
 # additional triggers
 CONF["trigger"]["labels"]["StartFix"] = 0x0A
-CONF["trigger"]["labels"]["Probe"] = 0x0B
+CONF["trigger"]["labels"]["MatchProbe"] = 0x0B
+CONF["trigger"]["labels"]["NonMatchProbe"] = 0x0C
+CONF["trigger"]["labels"]["CorrectAnswer"] = 0x0D
+CONF["trigger"]["labels"]["IncorrectAnswer"] = 0x0E

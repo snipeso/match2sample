@@ -114,8 +114,7 @@ for block in range(1, totBlocks + 1):
     logging.info(f"{block} / {totBlocks}")
 
     # start block
-    for trial in range(len(levels)):
-        level = levels[trial]
+    for trial, level in enumerate(levels):
         logging.info('Starting trial #%s with %s stimuli',
                      trial + 1, level)
 
@@ -171,13 +170,15 @@ for block in range(1, totBlocks + 1):
         if shouldMatch[trial]:
             # TODO one day: make this not random, but counterbalanced
             probe = random.choice(screen.stimuli["filenames"])
+            probeTrigger = "MatchProbe"
         else:
             notShown = set(screen.files) - set(screen.stimuli)
             probe = random.choice(list(notShown))
+            probeTrigger = "NonMatchProbe"
 
         # show probe stimulus
         screen.show_probe(probe)
-        trigger.send("Probe")  # TODO, make this happen on flip! so fast!
+        trigger.send(probeTrigger)  # TODO, make this happen on flip! so fast!
         responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
 
         Missed = True

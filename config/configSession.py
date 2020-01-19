@@ -37,7 +37,8 @@ CONF = {
             "StartBlank": 0x06,
             "EndBlank": 0x07,
             "ALARM": 0x08,
-            "Quit": 0x09
+            "Quit": 0x09,
+            "TrialID": 250,
         }
     }
 }

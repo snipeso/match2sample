@@ -5,7 +5,7 @@ import logging
 
 class Trigger:
     def __init__(self, serial_device, shouldTrigger, labels={}):
-
+        self.triggerId = 0
         self._delay = 0.01
         self._labels = labels
         print(shouldTrigger)
@@ -28,3 +28,20 @@ class Trigger:
 
     def reset(self):
         self._write(0xFF)
+
+    # def sendID(self, trialID):
+    #     if trialID > 249:
+    #         raise ValueError(
+    #             "Trial ID too large! Can't be larger than 249. You gave:", trialID)
+
+    #     self.send("trialID")
+    #     self._write(trialID)
+
+    def sendTriggerId(self):
+        currentId = self.triggerId
+        logging.info("triggerId: %s", currentId)
+        self.triggerId += 1
+
+        # do the thing TODO
+
+        return currentId, 1
