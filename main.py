@@ -96,10 +96,9 @@ core.wait(CONF["timing"]["cue"])
 # initialize variables
 stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
-levels = CONF["task"]["levels"] * CONF["task"]["trials"]
-shouldMatch = [True] * math.ceil(len(levels)/2) + [False] * \
-    int(len(levels)/2)  # probe matches half the time
 
+conditions = [(levels, matches) for levels in CONF["task"]["levels"]
+              for matches in [True, False]] * math.ceil(CONF["task"]["trials"]/2)
 
 ################################################
 # loop through blocks and trials
@@ -109,15 +108,14 @@ for block in range(1, totBlocks + 1):
     totMissed = 0
 
     # set block conditions
-    random.shuffle(levels)
-    random.shuffle(shouldMatch)
+    random.shuffle(conditions)
 
     logging.info(f"{block} / {totBlocks}")
 
     # start block
-    for trial, level in enumerate(levels):
+    for trial, condition in enumerate(conditions):
         logging.info('Starting trial #%s with %s stimuli',
-                     trial + 1, level)
+                     trial + 1, condition[0])
 
         triggerId = trigger.sendTriggerId()
 
@@ -151,7 +149,7 @@ for block in range(1, totBlocks + 1):
 
         # show stimulus
         screen.window.callOnFlip(onFlip)
-        screen.show_new_grid(level)
+        screen.show_new_grid(condition[0])
         core.wait(CONF["task"]["stimTime"])
 
         # show just fixation dot
@@ -174,7 +172,7 @@ for block in range(1, totBlocks + 1):
         datalog["extrakeypresses"] = extraKeys
 
         # determine probe stimulus
-        if shouldMatch[trial]:
+        if condition[1]:
             # TODO one day: make this not random, but counterbalanced
             probe = random.choice(screen.stimuli["filenames"])
             probeTrigger = "MatchProbe"
@@ -197,9 +195,9 @@ for block in range(1, totBlocks + 1):
 
                 if answer not in CONF["task"]["answerKeys"]:
                     responseTrigger = "BadResponse"
-                elif shouldMatch[trial] and answer == CONF["task"]["answerKeys"][0]:
+                elif condition[1] and answer == CONF["task"]["answerKeys"][0]:
                     responseTrigger = "CorrectAnswer"
-                elif not shouldMatch[trial] and answer == CONF["task"]["answerKeys"][1]:
+                elif not condition[1] and answer == CONF["task"]["answerKeys"][1]:
                     responseTrigger = "CorrectAnswer"
                 else:
                     responseTrigger = "IncorrectAnswer"
@@ -210,14 +208,14 @@ for block in range(1, totBlocks + 1):
                 break
 
         # log data
-        datalog["level"] = level
+        datalog["level"] = condition[0]
         datalog["block"] = block
         datalog["trial"] = trial
         datalog["triggerID"] = triggerId
 
         datalog["stimuli"] = screen.stimuli
         datalog["probe"] = probe
-        datalog["shouldMatch"] = shouldMatch[trial]
+        datalog["shouldMatch"] = condition[1]
 
         if Missed:
             datalog["missed"] = True
