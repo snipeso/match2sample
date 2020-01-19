@@ -11,10 +11,10 @@ CONF.update({
         "levels": [1, 3, 6],
         "stimTime": 3,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
-        "retentionTime":  7,  # 6,
+        "retentionTime":  1,  # 7,
         "probeTime": 3,
         "maxMissed": 3,
-
+        "answerKeys": ["left", "right"]  # match and mismatch respectively
 
     },
     "stimuli": {
@@ -22,7 +22,7 @@ CONF.update({
         # needs to be large enough for max number of stimuli
         "gridDimentions": [3, 3],  # number of cells in rows and columns
         "cellHeight": 2,  # in cm
-        "stimHeight": 2,
+        "stimSize": (2, 2),
 
     },
     "pause": {
@@ -30,8 +30,13 @@ CONF.update({
         "duration": 1  # figure it out
     },
     "instructions": {
-        "text": "You will be presented with either 1, 3, or 6 stimuli. After a delay, a symbol will be shown, and you must indicate with 1 if it was included, or 0 if it was not in the original set.",
-        "startPrompt": "Press any key to start. Press q to quit."
+        "text": "You will be presented with either 1, 3, or 6 stimuli. After a delay, a symbol will be shown, and you must indicate with LEFT arrow if it was included, or RIGHT arrow if it was not in the original set.",
+        "startPrompt": "Press any key to start. Press q to quit.",
+        "matchImage": os.path.join("stimuli", "probe", "check.png"),
+        "mismatchImage": os.path.join("stimuli", "probe", "x.png"),
+        "matchPos": (-5, 0),  # in cm
+        "mismatchPos": (5, 0),
+        "matchSize": (1, 1)
     },
     "tones": {
         "alarm": "horn.wav",

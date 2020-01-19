@@ -60,7 +60,7 @@ class Screen:
         # setup stimuli
         self.symbol = visual.ImageStim(
             self.window,
-            size=(CONF["stimuli"]["stimHeight"], CONF["stimuli"]["stimHeight"])
+            size=(CONF["stimuli"]["stimSize"])
         )
 
         # self.fixation = visual.TextStim(
@@ -88,6 +88,18 @@ class Screen:
 
         ###################################################
         # find the center position of all cells in the grid
+        self.match = visual.ImageStim(self.window,
+                                      image=CONF["instructions"]["matchImage"],
+                                      size=CONF["instructions"]["matchSize"],
+                                      pos=CONF["instructions"]["matchPos"],
+                                      units="cm"
+                                      )
+        self.mismatch = visual.ImageStim(self.window,
+                                         image=CONF["instructions"]["mismatchImage"],
+                                         size=CONF["instructions"]["matchSize"],
+                                         pos=CONF["instructions"]["mismatchPos"],
+                                         units="cm"
+                                         )
 
         def findPosition(n, l):
             return (n-1)*l/2
@@ -113,6 +125,9 @@ class Screen:
         # get list of filenames
         # TODO: make this already include the path
         self.files = os.listdir(CONF["stimuli"]["location"])
+
+        ##################
+        # probe components
 
     def show_overview(self):
         self.task.draw()
@@ -169,4 +184,6 @@ class Screen:
 
     def show_probe(self, filename):
         self._draw_symbol(filename, None)
+        self.match.draw()
+        self.mismatch.draw()
         self.window.flip()

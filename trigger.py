@@ -44,4 +44,4 @@ class Trigger:
 
         # do the thing TODO
 
-        return currentId, 1
+        return currentId, 1 * self._delay

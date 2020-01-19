@@ -118,7 +118,7 @@ for block in range(1, totBlocks + 1):
         logging.info('Starting trial #%s with %s stimuli',
                      trial + 1, level)
 
-        trigger.sendTriggerId()
+        triggerId = trigger.sendTriggerId()
 
         ###############################
         # Wait a little
@@ -187,8 +187,19 @@ for block in range(1, totBlocks + 1):
         while responseTimer.getTime() > 0:
             key = kb.getKeys()
             if key:
-                quitExperimentIf(key[0].name == 'q')
-                trigger.send("Response")
+                answer = key[0].name
+                quitExperimentIf(answer == 'q')
+
+                if answer not in CONF["task"]["answerKeys"]:
+                    responseTrigger = "BadResponse"
+                elif shouldMatch[trial] and answer == CONF["task"]["answerKeys"][0]:
+                    responseTrigger = "CorrectAnswer"
+                elif not shouldMatch[trial] and answer == CONF["task"]["answerKeys"][1]:
+                    responseTrigger = "CorrectAnswer"
+                else:
+                    responseTrigger = "IncorrectAnswer"
+
+                trigger.send(responseTrigger)
                 Missed = False
                 break
 
@@ -196,6 +207,7 @@ for block in range(1, totBlocks + 1):
         datalog["level"] = level
         datalog["block"] = block
         datalog["trial"] = trial
+        datalog["triggerID"] = triggerId
 
         datalog["stimuli"] = screen.stimuli
         datalog["probe"] = probe
