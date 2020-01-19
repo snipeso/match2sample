@@ -6,14 +6,13 @@ CONF.update({
     "task": {
         "name": "match2sample",
         "blocks": 4,  # number of blocks, try to be even
-        "trials": 8,  # number of trials per condition
+        "trials": 10,  # number of trials per condition
         "levels": [1, 3, 6],
         "stimTime": 2,  # in seconds, min time to be considered a valid RT
         # time window after stimulus disappearance when it still counts as a key response
         "retentionTime": 4,
         "probeTime": 3,
-        "maxMissed": 3,
-        "answerKeys": ["left", "right"]  # match and mismatch respectively
+        "answerKeys": ["right", "left", ]  # mismatch and match respectively
 
     },
     "stimuli": {
@@ -33,8 +32,8 @@ CONF.update({
         "startPrompt": "Press any key to continue. Press q to quit.",
         "matchImage": os.path.join("stimuli", "probe", "check.png"),
         "mismatchImage": os.path.join("stimuli", "probe", "x.png"),
-        "matchPos": (-5, 0),  # in cm
-        "mismatchPos": (5, 0),
+        "matchPos": (5, 0),  # in cm
+        "mismatchPos": (-5, 0),
         "matchSize": (1, 1)
     },
     "tones": {

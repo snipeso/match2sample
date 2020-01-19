@@ -36,7 +36,6 @@ class Trigger:
         logging.info("triggerId: %s", currentId)
         self.nextTriggerId += 1
 
-        # do the thing TODO
         triggers = id2triggers(currentId)
         for trigger in triggers:
             self._write(trigger)

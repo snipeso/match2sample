@@ -123,7 +123,6 @@ class Screen:
         self.coordinates = coordinates
 
         # get list of filenames
-        # TODO: make this already include the path
         self.files = os.listdir(CONF["stimuli"]["location"])
 
         ##################

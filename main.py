@@ -50,13 +50,13 @@ def quitExperimentIf(shouldQuit):
         trigger.send("Quit")
         scorer.getScore()
         logging.info('quit experiment')
-        sys.exit(2)  # TODO: make version where quit is sys 1 vs sys 2
+        sys.exit(2)
 
 
-def onFlip():
-    trigger.send("Stim")
+def onFlip(stim, logName):
+    trigger.send(stim)
     kb.clock.reset()  # this starts the keyboard clock as soon as stimulus appears
-    datalog["startTime"] = mainClock.getTime()
+    datalog[logName] = mainClock.getTime()
 
 ##############
 # Introduction
@@ -134,7 +134,6 @@ for block in range(1, totBlocks + 1):
             #  Record any extra key presses during wait
             key = kb.getKeys()
             if key:
-                # TODO: make seperate function that also keeps track of q, make q in config
                 quitExperimentIf(key[0].name == 'q')
                 extraKeys.append(mainClock.getTime())
                 trigger.send("BadResponse")
@@ -149,7 +148,7 @@ for block in range(1, totBlocks + 1):
         core.wait(CONF["timing"]["cue"])
 
         # show stimulus
-        screen.window.callOnFlip(onFlip)
+        screen.window.callOnFlip(onFlip("Stim"), "startTime")
         screen.show_new_grid(condition[0])
         core.wait(CONF["task"]["stimTime"])
 
@@ -183,8 +182,8 @@ for block in range(1, totBlocks + 1):
             probeTrigger = "NonMatchProbe"
 
         # show probe stimulus
+        screen.window.callOnFlip(onFlip(probeTrigger, "probeTime"))
         screen.show_probe(probe)
-        trigger.send(probeTrigger)  # TODO, make this happen on flip! so fast!
         responseTimer = core.CountdownTimer(CONF["task"]["probeTime"])
 
         Missed = True
@@ -228,7 +227,7 @@ for block in range(1, totBlocks + 1):
                 logging.warning("alarm sound!!!!!")
         else:
             datalog["response"] = key[0].name
-            datalog["RT"] = key[0].rt  # make sure clock resets to probe onset!
+            datalog["RT"] = key[0].rt
             scorer.newAnswer(responseTrigger)
 
         logging.info("finished trial")

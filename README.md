@@ -21,19 +21,15 @@ Then from a new terminal, you can run directly `exp-match2sample` and it starts!
 
 ## Design
 
-- 3 seconds to memorize either 1, 3 or 6 symbols
-- 7 seconds retention
+- 2 seconds to memorize either 1, 3 or 6 symbols
+- 4 seconds retention
 - 3 seconds reponse (maybe do 2 6 and 2?)
-- 10 trials of each size, so 30 per block, tot 3 blocks
+- 10 trials of each size, so 30 per block, tot 4 blocks
 
 ## Todo
 
-- check literature again
 - set a mask! to avoid after-images helping memory
 - make demo version
-- reset kb rt
-- prolong break
-- counterbalance matches and not, such that half of match trials are per level
 
 ### Eventual TODOs
 
