@@ -102,10 +102,13 @@ class Screen:
                         self.CONF["stimuli"]["gridDimentions"][1])
         y = np.linspace(-halfy, halfy,
                         self.CONF["stimuli"]["gridDimentions"][0])
-        print(x, y)
-        self.x = np.concatenate((x, x))
-        self.y = np.repeat(y, len(x))
-        print("rep", self.x, self.y)
+        # cartesian product to get all coordinate combos
+        coordinates = [(xx, yy) for xx in x for yy in y]
+
+        midpointIndx = len(coordinates) // 2
+        self.midpoint = coordinates[midpointIndx]
+        del coordinates[midpointIndx]
+        self.coordinates = coordinates
 
         # get list of filenames
         # TODO: make this already include the path
@@ -133,15 +136,15 @@ class Screen:
         self.cue.draw()
         self.window.flip()
 
-    def _draw_symbol(self, filename, locationIdx):
+    def _draw_symbol(self, filename, location):
         filepath = os.path.join(
             self.CONF["stimuli"]["location"], filename)
 
-        if locationIdx:
-            self.symbol.pos = [self.x[locationIdx], self.y[locationIdx]]
-            print("num", self.symbol.pos, self.x, self.y, locationIdx)
+        if location is not None:
+            self.symbol.pos = location
+
         else:
-            self.symbol.pos = [0, 0]
+            self.symbol.pos = self.midpoint
             print("0", self.symbol.pos)
         self.symbol.setImage(filepath)
         self.symbol.draw()
@@ -150,13 +153,12 @@ class Screen:
         stimuli = {}
         symbolFiles = random.sample(self.files, level)
         locations = random.sample(
-            range(len(self.x)), level)
+            self.coordinates, level)
         print("all locs", locations)
-        idx = 0  # TODO: find better solution
-        for filename in symbolFiles:
+
+        for idx, filename in enumerate(symbolFiles):
             self._draw_symbol(filename, locations[idx])
 
-            idx += 1
         stimuli["filenames"] = symbolFiles
         stimuli["locations"] = locations
 
@@ -166,5 +168,5 @@ class Screen:
         self.stimuli = stimuli
 
     def show_probe(self, filename):
-        self._draw_symbol(filename, False)
+        self._draw_symbol(filename, None)
         self.window.flip()

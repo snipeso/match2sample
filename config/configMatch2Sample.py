@@ -20,8 +20,8 @@ CONF.update({
     "stimuli": {
         "location": os.path.join("stimuli", "jediAlphabet"),
         # needs to be large enough for max number of stimuli
-        "gridDimentions": [2, 3],  # number of cells in rows and columns
-        "cellHeight": 3,  # in cm
+        "gridDimentions": [3, 3],  # number of cells in rows and columns
+        "cellHeight": 2,  # in cm
         "stimHeight": 2,
 
     },
