@@ -118,6 +118,7 @@ for block in range(1, totBlocks + 1):
                      trial + 1, condition[0])
 
         triggerId = trigger.sendTriggerId()
+        datalog["triggerID"] = triggerId
 
         ###############################
         # Wait a little
@@ -211,7 +212,6 @@ for block in range(1, totBlocks + 1):
         datalog["level"] = condition[0]
         datalog["block"] = block
         datalog["trial"] = trial
-        datalog["triggerID"] = triggerId
 
         datalog["stimuli"] = screen.stimuli
         datalog["probe"] = probe
