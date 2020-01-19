@@ -118,6 +118,8 @@ for block in range(1, totBlocks + 1):
         logging.info('Starting trial #%s with %s stimuli',
                      trial + 1, level)
 
+        trigger.sendTriggerId()
+
         ###############################
         # Wait a little
 
