@@ -5,9 +5,8 @@ import time
 import datetime
 import sys
 import math
-# import psychtoolbox as ptb
 
-from chronometer import Chronometer
+
 from screen import Screen
 from scorer import Scorer
 from trigger import Trigger
@@ -53,8 +52,8 @@ def quitExperimentIf(shouldQuit):
         sys.exit(2)
 
 
-def onFlip(stim, logName):
-    trigger.send(stim)
+def onFlip(stimName, logName):
+    trigger.send(stimName)
     kb.clock.reset()  # this starts the keyboard clock as soon as stimulus appears
     datalog[logName] = mainClock.getTime()
 
@@ -94,13 +93,12 @@ core.wait(CONF["timing"]["cue"])
 #################
 
 # initialize variables
-stimulus_number = 0
 totBlocks = CONF["task"]["blocks"]
 
 conditions = [(levels, matches) for levels in CONF["task"]["levels"]
               for matches in [True, False]] * math.ceil(CONF["task"]["trials"]/2)
 
-################################################
+
 # loop through blocks and trials
 for block in range(1, totBlocks + 1):
 
@@ -120,7 +118,7 @@ for block in range(1, totBlocks + 1):
         triggerId = trigger.sendTriggerId()
         datalog["triggerID"] = triggerId
 
-        ###############################
+        ###############
         # Wait a little
 
         screen.show_blank()
@@ -245,7 +243,7 @@ for block in range(1, totBlocks + 1):
 
 ###########
 # Concluion
-
+###########
 
 # End main experiment
 screen.show_cue("DONE!")

@@ -28,8 +28,7 @@ Then from a new terminal, you can run directly `exp-match2sample` and it starts!
 
 ## Todo
 
-- set a mask! to avoid after-images helping memory
-- make demo version
+- center text properly
 
 ### Eventual TODOs
 
