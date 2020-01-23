@@ -49,6 +49,7 @@ def quitExperimentIf(shouldQuit):
         trigger.send("Quit")
         scorer.getScore()
         logging.info('quit experiment')
+        trigger.reset()
         sys.exit(2)
 
 
