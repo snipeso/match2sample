@@ -22,6 +22,8 @@ match2sampleCONF = {
         "gridDimentions": [3, 3],  # number of cells in rows and columns
         "cellHeight": 2,  # in cm
         "stimSize": (2, 2),
+        "fixationSize": (.5, .5),
+        "fixationColor": "red"
 
     },
     "pause": {
