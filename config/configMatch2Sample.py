@@ -35,9 +35,7 @@ match2sampleCONF = {
         "mismatchImage": os.path.join("stimuli", "probe", "x.JPG"),
         "matchPos": (5, 0),  # in cm
         "mismatchPos": (-5, 0),
-        "matchSize": (1, 1)
-    },
-    "tones": {
+        "matchSize": (1, 1),
         "alarm": "horn.wav",
     }
 }

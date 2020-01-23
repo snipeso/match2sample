@@ -33,7 +33,7 @@ datalog = Datalog(OUTPUT_FOLDER=os.path.join(
     ).strftime("%Y-%m-%d")), CONF=CONF)  # This is for saving data
 kb = keyboard.Keyboard()
 mainClock = core.MonotonicClock()  # starts clock for timestamping events
-alarm = sound.Sound(os.path.join('sounds', CONF["tones"]["alarm"]),
+alarm = sound.Sound(os.path.join('sounds', CONF["instructions"]["alarm"]),
                     stereo=True)
 
 
