@@ -9,7 +9,8 @@ match2sampleCONF = {
         # number of trials per condition
         "trials":  {"versionMain": 10, "versionDemo": 30, "versionDebug": 5},
         "levels":  {"versionMain": [1, 3, 6], "versionDemo": [1], "versionDebug": [1, 3, 6]},
-        "stimTime": 2,  # in seconds, min time to be considered a valid RT
+        # in seconds, min time to be considered a valid RT
+        "stimTime": {"versionMain": 2, "versionDemo": 1, "versionDebug": 1},
         # time window after stimulus disappearance when it still counts as a key response
         "retentionTime": {"versionMain": 4, "versionDemo": 1, "versionDebug": 1},
         "probeTime": 3,
@@ -31,7 +32,7 @@ match2sampleCONF = {
         "duration": 2
     },
     "instructions": {
-        "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the LEFT arrow if it was included in the previous set, or with the RIGHT arrow if it was not. You hae 3 seconds to respond.",
+        "text": "You will be presented with either 1, 3, or 6 symbols at once. After a delay, a 'probe' symbol will be shown, and you must indicate with the RIGHT arrow if it was included in the previous set, or with the LEFT arrow if it was not. You have 3 seconds to respond.",
         "startPrompt": "Press any key to continue. Press q to quit.",
         "matchImage": os.path.join("stimuli", "probe", "check.JPG"),
         "mismatchImage": os.path.join("stimuli", "probe", "x.JPG"),
