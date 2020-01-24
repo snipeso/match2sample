@@ -228,6 +228,7 @@ for block in range(1, totBlocks + 1):
             datalog["response"] = key[0].name
             datalog["RT"] = key[0].rt
             scorer.newAnswer(responseTrigger)
+            totMissed = 0
 
         logging.info("finished trial")
 
