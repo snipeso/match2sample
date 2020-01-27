@@ -40,6 +40,7 @@ match2sampleCONF = {
         "mismatchPos": (-5, 0),
         "matchSize": (1, 1),
         "alarm": "horn.wav",
+        "questionnaireReminder": "answerQuestionnaire.wav"
     }
 }
 
