@@ -90,7 +90,7 @@ if CONF["showInstructions"]:
 
 
 eyetracker.start_recording(os.path.join(
-    CONF["participant"], CONF["session"], CONF["task"]["name"]))
+    CONF["participant"], CONF["task"]["name"], CONF["session"]))
 
 # Blank screen for initial rest
 screen.show_blank()
